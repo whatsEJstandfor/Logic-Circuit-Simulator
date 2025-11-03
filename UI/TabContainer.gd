@@ -1,6 +1,6 @@
 extends TabContainer
 
-onready var tabs_node = get_tree().get_root().get_node("/root/Scene/Tabs")
+@onready var tabs_node = get_tree().get_root().get_node("/root/Scene/TabBar")
 var tab_instance= preload("res://Scenes/Tab.tscn")
 func _ready():
 	for i in self.get_children():
@@ -23,7 +23,7 @@ func _on_TabContainer_tab_selected(tab):
 		for i in get_node("../CreateBar/VBoxContainer").get_children():
 			if i.get_class()=="Button":
 				i.disabled=true
-		get_node("../PrefabBar/HBoxContainer/Path").editable=false
+		get_node("../PrefabBar/HBoxContainer/Path3D").editable=false
 		get_node("../PrefabBar/HBoxContainer/UpButton").disabled=true
 		get_node("../PrefabBar/HBoxContainer/Button").disabled=true
 		for i in get_node("../PrefabBar/ScrollContainer/VBoxContainer").get_children():
@@ -32,7 +32,7 @@ func _on_TabContainer_tab_selected(tab):
 		for i in get_node("../CreateBar/VBoxContainer").get_children():
 			if i.get_class()=="Button":
 				i.disabled=false
-		get_node("../PrefabBar/HBoxContainer/Path").editable=true
+		get_node("../PrefabBar/HBoxContainer/Path3D").editable=true
 		get_node("../PrefabBar/HBoxContainer/UpButton").disabled=false
 		get_node("../PrefabBar/HBoxContainer/Button").disabled=false
 		for i in get_node("../PrefabBar/ScrollContainer/VBoxContainer").get_children():
@@ -51,9 +51,9 @@ func CreateCustomTab(tabname,format):
 		var tab_node = tab_instance.instance()
 		tab_node.name=tabname
 		tabs_node.add_child(tab_node)
-		var tab_ui=Tabs.new()
+		var tab_ui=TabBar.new()
 		tab_ui.name=tabname
-		self.add_child_below_node(get_node("+"),tab_ui,true)
+		self.add_sibling(get_node("+"),tab_ui,true)
 		self.move_child(get_node("+"),get_tab_count()-1)
 		tab_node.format=format
 		SwitchTab(tabname)

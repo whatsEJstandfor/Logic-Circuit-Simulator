@@ -1,14 +1,14 @@
 extends Node
 
-onready var tabs_node = get_tree().get_root().get_node("/root/Scene/Tabs")
-onready var tab_container = get_tree().get_root().get_node("/root/Scene/CanvasLayer/TabContainer")
+@onready var tabs_node = get_tree().get_root().get_node("/root/Scene/TabBar")
+@onready var tab_container = get_tree().get_root().get_node("/root/Scene/CanvasLayer/TabContainer")
 var input = preload("res://base nodes/input.tscn")
 var output = preload("res://base nodes/output.tscn")
 var prefab_item=preload("res://Scenes/PrefabItems.tscn")
 var Prefab=preload("res://gates/prefab_gate.tscn")
 var opening_error=false
 func _ready():
-	var dir = Directory.new()
+	var dir = DirAccess.new()
 	if dir.open("user://") == OK:
 		dir.make_dir("user://Scenes")
 		dir.make_dir("user://Prefabs")
@@ -50,7 +50,7 @@ func SaveScene(tab,filepath):
 			for out in i.get_node("Outputs").get_children():
 				TabData[i.name].Outputs[out.name]={"Connection":out.connection,"Value":out.value}
 		elif i.name!="PrefabItems":
-			TabData[i.name]={"Type":"Prefab","Rotation":i.rotation_degrees,"Position":{"x":i.position.x,"y":i.position.y},"Inputs":{},"Outputs":{},"Path":i.path}
+			TabData[i.name]={"Type":"Prefab","Rotation":i.rotation_degrees,"Position":{"x":i.position.x,"y":i.position.y},"Inputs":{},"Outputs":{},"Path3D":i.path}
 			for inp in i.get_node("Sockets").get_children():
 				if inp.connected:
 					var line={}
@@ -81,7 +81,7 @@ func SaveScene(tab,filepath):
 		save_file.open("user://Scenes/"+tab.name+".json",File.WRITE)
 	else:
 		save_file.open(filepath,File.WRITE)
-	save_file.store_line(to_json(FileSetup))
+	save_file.store_line(JSON.new().stringify(FileSetup))
 	save_file.close()
 
 func OpenFile(directory):
@@ -113,7 +113,9 @@ func OpenDirectory(directory):
 	var Item={}
 	var file=File.new()
 	file.open(directory,File.READ)
-	Item=JSON.parse(file.get_as_text())
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(file.get_as_text())
+	Item=test_json_conv.get_data()
 	file.close()
 	return Item
 	
@@ -134,10 +136,10 @@ func CreateScene(Filepath,TabData):
 					unit.CreateLegsFromInstance(TabData[i])
 			elif TabData[i].Type=="Prefab":
 				print("\tCreating\t",i)
-				unit=Prefab.instance()
-				unit.path=TabData[i].Path
-				unit.get_node("Gate/Label").text=TabData[i].Path.get_file().left(TabData[i].Path.get_file().length()-5)
-				unit.Item=OpenDirectory(TabData[i].Path)
+				unit=Prefab.instantiate()
+				unit.path=TabData[i].Path3D
+				unit.get_node("Gate/Label").text=TabData[i].Path3D.get_file().left(TabData[i].Path3D.get_file().length()-5)
+				unit.Item=OpenDirectory(TabData[i].Path3D)
 				unit.Info=TabData[i]
 				if unit.Item.error!=0:
 					print("Error at scene\tat opening file:\t",unit.Item.error,Filepath)
@@ -156,7 +158,7 @@ func CreateScene(Filepath,TabData):
 			if TabData[i].Type=="Clock":
 				unit.get_node("SpinBox").value=TabData[i].Cycle
 			elif TabData[i].Type=="Variable":
-				if TabData[i].Value==1:	unit.get_node("CheckButton").pressed=true
+				if TabData[i].Value==1:	unit.get_node("CheckButton").button_pressed=true
 			elif TabData[i].Type=="Label":
 				unit.get_node("Gate/Label").text=TabData[i].Text
 			print("\tCreating\t",i,"\tat\t",TabData[i].Position.x,",",TabData[i].Position.y)
@@ -165,15 +167,15 @@ func CreateScene(Filepath,TabData):
 func CreatePrefab(Filepath,TabData,PrefabItems,tab):
 	tab.format="Prefab"
 	tab.path=Filepath
-	tab.add_child(prefab_item.instance())
+	tab.add_child(prefab_item.instantiate())
 	Database.GetCurrentTab().AppendHistory({"Action":"CreatePrefab","Tab":tab})
 	if tab!=null and opening_error==false:
 		for i in PrefabItems.Inputs.keys():
-			var inp=input.instance()
+			var inp=input.instantiate()
 			inp.name=i
 			tab.get_node("PrefabItems/Inputs").add_child(inp)
 		for i in PrefabItems.Outputs.keys():
-			var out=output.instance()
+			var out=output.instantiate()
 			out.name=i
 			tab.get_node("PrefabItems/Outputs").add_child(out)
 		for i in TabData.keys():
@@ -185,11 +187,11 @@ func CreatePrefab(Filepath,TabData,PrefabItems,tab):
 					unit.CreateLegsFromInstance(TabData[i])
 			elif TabData[i].Type=="Prefab":
 				print("\tCreating\t",i)
-				unit=Prefab.instance()
+				unit=Prefab.instantiate()
 				unit.name=i+" "+str(unit.get_instance_id())
-				unit.get_node("Gate/Label").text=TabData[i].Path.get_file().left(TabData[i].Path.get_file().length()-5)
-				unit.path=TabData[i].Path
-				unit.Item=OpenDirectory(TabData[i].Path)
+				unit.get_node("Gate/Label").text=TabData[i].Path3D.get_file().left(TabData[i].Path3D.get_file().length()-5)
+				unit.path=TabData[i].Path3D
+				unit.Item=OpenDirectory(TabData[i].Path3D)
 				unit.Info=TabData[i]
 				if unit.Item.error!=0:
 					print("Error at prefab\tat opening file:\t",unit.Item.error,Filepath)
@@ -209,7 +211,7 @@ func CreatePrefab(Filepath,TabData,PrefabItems,tab):
 			if TabData[i].Type=="Clock":
 				unit.get_node("SpinBox").value=TabData[i].Cycle
 			elif TabData[i].Type=="Variable":
-				if TabData[i].Value==1:	unit.get_node("CheckButton").pressed=true
+				if TabData[i].Value==1:	unit.get_node("CheckButton").button_pressed=true
 			elif TabData[i].Type=="Label":
 				unit.get_node("Gate/Label").text=TabData[i].Text
 			print("\tCreating\t",i,"\tat\t",TabData[i].Position.x,",",TabData[i].Position.y)
@@ -217,7 +219,7 @@ func CreatePrefab(Filepath,TabData,PrefabItems,tab):
 		
 
 func ConnectLines(TabData,PrefabItems,tab):
-	yield(get_tree().create_timer(0.2), "timeout")
+	await get_tree().create_timer(0.2).timeout
 	print("==",tab.get_parent().get_parent().name,"\t requested to connect lines. Starting...")
 	if opening_error==false:
 		
@@ -255,7 +257,7 @@ func ConnectLines(TabData,PrefabItems,tab):
 		get_tree().get_root().get_node("/root/Scene/CanvasLayer/OpeningError").popup()
 func GetCurrentTab():
 	var visible_scene
-	for i in get_tree().get_root().get_node("/root/Scene/Tabs").get_children():
+	for i in get_tree().get_root().get_node("/root/Scene/TabBar").get_children():
 		if i.visible:
 			visible_scene=i
 			break

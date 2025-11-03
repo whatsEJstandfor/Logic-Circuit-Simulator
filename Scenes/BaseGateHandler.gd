@@ -17,12 +17,12 @@ var gates={
 func SetupUnit(gatetype):
 	var node
 	if gatetype=="Variable" or gatetype=="Clock" or gatetype=="Label" or gatetype=="Output":
-		node=gates[gatetype].instance()
+		node=gates[gatetype].instantiate()
 	else:
-		node=base_gate.instance()
-		var gate=gates[gatetype].instance()
-		gate.rect_position.y=-36
-		gate.rect_position.x=-40
+		node=base_gate.instantiate()
+		var gate=gates[gatetype].instantiate()
+		gate.position.y=-36
+		gate.position.x=-40
 		node.add_child(gate)
 		node.move_child(gate,0)
 	return node

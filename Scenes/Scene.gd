@@ -1,12 +1,12 @@
 extends Node2D
-export var on = true
+@export var on = true
 
 func _process(_delta):
 	update()
 func _draw():
 	if dragging:
 		draw_rect(Rect2(drag_start, get_global_mouse_position() - drag_start),
-				Color("50ffffff"), false)
+				Color("#ffffff50"), false)
 	var grid=get_node("CanvasLayer/GridSeperator").value
 	if on and grid!=0: 
 		var size = get_viewport_rect().size  * get_node("Camera2D").zoom / 2
@@ -20,7 +20,7 @@ var dragging = false
 var selected = {}
 var drag_start = Vector2.ZERO
 func _unhandled_input(event):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			drag_start = Vector2.ZERO
 			if selected.size() == 0:

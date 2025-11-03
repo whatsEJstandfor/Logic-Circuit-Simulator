@@ -6,10 +6,10 @@ func _ready():
 	for i in get_node("../CanvasLayer").get_children(): 
 		for j in i.get_children():
 			if j.has_signal("mouse_entered"):
-				j.connect("mouse_entered",self,"_on_mouse_entered")
-				j.connect("mouse_exited",self,"_on_mouse_exited")
-		i.connect("mouse_entered",self,"_on_mouse_entered")
-		i.connect("mouse_exited",self,"_on_mouse_exited")
+				j.connect("mouse_entered", Callable(self, "_on_mouse_entered"))
+				j.connect("mouse_exited", Callable(self, "_on_mouse_exited"))
+		i.connect("mouse_entered", Callable(self, "_on_mouse_entered"))
+		i.connect("mouse_exited", Callable(self, "_on_mouse_exited"))
 		
 		
 func _process(delta):

@@ -1,7 +1,7 @@
 extends Node
 var mouse_position
 var input_leg=preload("res://UI/InputLeg.tscn")
-onready var displayer=get_node("../Scene/CanvasLayer/Displayer")
+@onready var displayer=get_node("../Scene/CanvasLayer/Displayer")
 var fiber=preload("res://base nodes/fiber.tscn")
 
 var selected_node
@@ -21,15 +21,15 @@ func _process(delta):
 	
 	if connecting and from!=null:
 		if displayer.grid_value!=0:
-			line.points[line.points.size()-1]=Vector2(int((UIHandler.mouse_position.x-from.rect_global_position.x)/displayer.grid_value)*displayer.grid_value,int((UIHandler.mouse_position.y-from.rect_global_position.y)/displayer.grid_value)*displayer.grid_value)
+			line.points[line.points.size()-1]=Vector2(int((UIHandler.mouse_position.x-from.global_position.x)/displayer.grid_value)*displayer.grid_value,int((UIHandler.mouse_position.y-from.global_position.y)/displayer.grid_value)*displayer.grid_value)
 		else:
-			line.points[line.points.size()-1]=UIHandler.mouse_position-from.rect_global_position
+			line.points[line.points.size()-1]=UIHandler.mouse_position-from.global_position
 	
 		if Input.is_action_just_pressed("left_click"):
 			if displayer.grid_value!=0:
-				line.add_point(Vector2(int((UIHandler.mouse_position.x-from.rect_global_position.x)/displayer.grid_value)*displayer.grid_value,int((UIHandler.mouse_position.y-from.rect_global_position.y)/displayer.grid_value)*displayer.grid_value))
+				line.add_point(Vector2(int((UIHandler.mouse_position.x-from.global_position.x)/displayer.grid_value)*displayer.grid_value,int((UIHandler.mouse_position.y-from.global_position.y)/displayer.grid_value)*displayer.grid_value))
 			else:
-				line.add_point(UIHandler.mouse_position-from.rect_global_position)
+				line.add_point(UIHandler.mouse_position-from.global_position)
 		if Input.is_action_just_pressed("right_click"):
 			connecting=false
 			from=null
@@ -86,7 +86,7 @@ func CreateUI(node):
 	
 	for i in node.get_node("Sockets").get_children():
 		if not displayer.get_node("VBoxContainer/InputTab").has_node("I"+str(i.get_instance_id())):
-			var tab=input_leg.instance()
+			var tab=input_leg.instantiate()
 			tab.name="I"+str(i.get_instance_id())
 			tab.socket=i.name
 			if i.connected:
@@ -103,7 +103,7 @@ func CreateUI(node):
 	
 	for i in node.get_node("Outputs").get_children():
 		if not displayer.get_node("VBoxContainer/OutputTab").has_node(i.name):
-			var tab=input_leg.instance()
+			var tab=input_leg.instantiate()
 			tab.name=i.name
 			tab.socket=i.name
 			if i.connection:
@@ -177,7 +177,7 @@ func connect_nodes(to):
 		valid=true
 		var tmp
 		for p in line.points:
-			p+=from.rect_global_position-to.rect_global_position
+			p+=from.global_position-to.global_position
 		for i in line.points.size()/2:
 			tmp=line.points[i]
 			line.points[i]=line.points[line.points.size()-1-i]
@@ -196,12 +196,12 @@ func start_connection(node):
 	connecting=true
 	from=node
 	
-	line=fiber.instance()
+	line=fiber.instantiate()
 	line.modulate.a=0.3
 	line.position=Vector2(0,0)
 	line.add_point(Vector2(0,0))
 	
-	print(from.rect_rotation," ",from.get_parent().get_parent().rotation_degrees)
+	print(from.rotation," ",from.get_parent().get_parent().rotation_degrees)
 	from.add_child(line)
 	
 func delete_node():
@@ -230,15 +230,15 @@ func Rotate(index,node):
 	Database.GetCurrentTab().AppendHistory({"Action":"Rotate","Node":node,"From":abs(node.rotation_degrees),"To":90*index})
 	node.rotation_degrees=-90*index
 	if (node.TYPE=="Gate" or node.TYPE=="Prefab"):# and index==2:
-		node.get_node("Gate/Label").rect_rotation=90*index
+		node.get_node("Gate/Label").rotation=90*index
 	#else:
 	#	node.get_node("Gate/Label").rect_rotation=0
 	if node.has_node("Sockets"):
 		for i in node.get_node("Sockets").get_children():
-			i.rect_rotation=90*index
+			i.rotation=90*index
 	if node.has_node("Outputs"):
 		for i in node.get_node("Outputs").get_children():
-			i.rect_rotation=90*index
+			i.rotation=90*index
 
 func CloseCurrentTab():
 	

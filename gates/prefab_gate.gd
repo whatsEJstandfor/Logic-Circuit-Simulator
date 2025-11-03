@@ -20,28 +20,28 @@ func CreateNode():
 func ResizeLegs():
 	if Info!=null:
 		for i in Info.Inputs.keys():
-			var s = socket.instance() 
+			var s = socket.instantiate() 
 			s.name=i
 			$Sockets.add_child(s)
 		for i in Info.Outputs.keys():
-			var s=output.instance()
+			var s=output.instantiate()
 			s.name=i
 			$Outputs.add_child(s)
 	else:
 		for i in get_node("Gate/Tab/PrefabItems/Outputs").get_children():
-			var s = socket.instance()
+			var s = socket.instantiate()
 			s.name=i.name
 			$Sockets.add_child(s)
 		for i in get_node("Gate/Tab/PrefabItems/Inputs").get_children():
-			var s = output.instance()
+			var s = output.instantiate()
 			s.name="O"+str(i.get_instance_id())
 			$Outputs.add_child(s)
 	legs=$Sockets.get_child_count()
-	$Gate.rect_size.y=36*legs
-	$Gate.rect_position.y=-18*legs
-	$Gate.rect_pivot_offset.y=18*legs
-	$Gate/Label.rect_size.y=36*legs
-	$Gate/Label.rect_pivot_offset.y=18*legs
+	$Gate.size.y=36*legs
+	$Gate.position.y=-18*legs
+	$Gate.pivot_offset.y=18*legs
+	$Gate/Label.size.y=36*legs
+	$Gate/Label.pivot_offset.y=18*legs
 	
 func DeleteNode():
 	for i in range($Sockets.get_child_count()):
@@ -52,9 +52,9 @@ func DeleteNode():
 			$Outputs.get_child(i).emit_signal("value_changed",2)
 		$Sockets.get_child(i).queue_free()
 	if $Gate/Label.text!="NOT":
-		$Sockets.rect_size.y=36*$Sockets.get_child_count()
-		$Gate.rect_size.y=36*$Sockets.get_child_count()
-		$Gate/Label.rect_size.y=36*$Sockets.get_child_count()
+		$Sockets.size.y=36*$Sockets.get_child_count()
+		$Gate.size.y=36*$Sockets.get_child_count()
+		$Gate/Label.size.y=36*$Sockets.get_child_count()
 		
 func _on_Button_button_down():
 	if Move.create:

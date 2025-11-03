@@ -1,9 +1,9 @@
 extends TabContainer
-onready var dialog=get_parent().get_node("FileDialog")
+@onready var dialog=get_parent().get_node("FileDialog")
 var visible_scene
 func _ready():
-	get_node("Simulator/HBoxContainer/Circuit Toolbar").pressed=true
-	get_node("Simulator/HBoxContainer/Prefab Toolbar").pressed=true
+	get_node("Simulator/HBoxContainer/Circuit Toolbar").button_pressed=true
+	get_node("Simulator/HBoxContainer/Prefab Toolbar").button_pressed=true
 
 func _input(event):
 	if event.is_action_pressed("Save"):
@@ -76,7 +76,7 @@ func _on_DeleteScene_confirmed():
 	visible_scene=Database.GetCurrentTab()
 	get_node("../TabContainer").current_tab=0
 	if visible_scene.path!=null:
-		var dir = Directory.new()
+		var dir = DirAccess.new()
 		dir.remove(visible_scene.path)
 	get_node("../TabContainer/"+visible_scene.name).queue_free()
 	

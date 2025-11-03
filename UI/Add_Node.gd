@@ -1,8 +1,8 @@
 extends Button
-onready var tabs_node = get_tree().get_root().get_node("/root/Scene/Tabs")
+@onready var tabs_node = get_tree().get_root().get_node("/root/Scene/TabBar")
 
 func _ready():
-	var _s1=self.connect("button_down",self,"_on_Button_down")
+	var _s1=self.connect("button_down", Callable(self, "_on_Button_down"))
 	
 func _on_Button_down():
 	if Move.hold and UIHandler.selected_node!=null:

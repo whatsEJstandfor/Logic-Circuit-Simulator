@@ -1,2 +1,2 @@
-extends Tabs
+extends TabBar
 var socket=null

@@ -9,14 +9,14 @@ var fiber=preload("res://base nodes/fiber.tscn")
 var coloring=false
 
 func _process(delta):
-	if mouse and $Blocks.rect_scale.x<1.5:
-		$Blocks.rect_scale+=Vector2(5*delta,5*delta)
-	elif mouse and $Blocks.rect_scale>=Vector2(1.5,1.5):
-		$Blocks.rect_scale=Vector2(1.5,1.5)
-	elif !mouse and $Blocks.rect_scale.x>1:
-		$Blocks.rect_scale-=Vector2(5*delta,5*delta)
+	if mouse and $Blocks.scale.x<1.5:
+		$Blocks.scale+=Vector2(5*delta,5*delta)
+	elif mouse and $Blocks.scale>=Vector2(1.5,1.5):
+		$Blocks.scale=Vector2(1.5,1.5)
+	elif !mouse and $Blocks.scale.x>1:
+		$Blocks.scale-=Vector2(5*delta,5*delta)
 	else:
-		$Blocks.rect_scale=Vector2(1,1)
+		$Blocks.scale=Vector2(1,1)
 		
 	if coloring:
 		if value==1 and $Blocks/off.modulate.a>0:	$Blocks/off.modulate.a-=5*delta
@@ -37,7 +37,7 @@ func SetValue(state):
 		if connected:
 			get_node(source.name).SetColor(state)
 	else:
-		 DisconnectOutput()
+		DisconnectOutput()
 	
 func _on_Button_mouse_entered():
 	mouse=true
@@ -56,7 +56,7 @@ func _on_Button_pressed():
 func ConnectOutput(node,placeholderline):
 	connected=true
 	source=node
-	var line = fiber.instance()
+	var line = fiber.instantiate()
 	line.source=node
 	line.target=self
 	line.name=source.name
@@ -64,9 +64,9 @@ func ConnectOutput(node,placeholderline):
 	for p in placeholderline.points:
 		line.add_point(p)
 	line.points[0]=Vector2(0,0)
-	line.points[line.points.size()-1]=node.rect_global_position
+	line.points[line.points.size()-1]=node.global_position
 	self.add_child(line)
-	source.connect("value_changed",self,"SetValue")
+	source.connect("value_changed", Callable(self, "SetValue"))
 	source.connection+=1
 
 func DisconnectOutput():
@@ -74,5 +74,5 @@ func DisconnectOutput():
 	source.connection-=1
 	connected=false
 	get_node(source.name).queue_free()
-	source.disconnect("value_changed",self,"SetValue")
+	source.disconnect("value_changed", Callable(self, "SetValue"))
 	source=null	

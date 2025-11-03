@@ -14,7 +14,7 @@ func _process(delta):
 	if node!=null:
 		if hold:
 			for i in selected_units.keys():
-				node.get_node("Gate").rect_rotation=sin(time*2.5)*5
+				node.get_node("Gate").rotation=sin(time*2.5)*5
 				if grid_value==0:
 					selected_units[i].Node.position=UIHandler.mouse_position+mouse_dist+selected_units[i].Position-old_position
 				else:
@@ -39,7 +39,7 @@ func MoveStart(order,object):
 		old_rotation=0
 		mouse_dist=Vector2.ZERO
 	else:
-		old_rotation=node.get_node("Gate").rect_rotation
+		old_rotation=node.get_node("Gate").rotation
 		mouse_dist=node.position-UIHandler.mouse_position
 	if on_group==false and get_node("/root/Scene").dragging==false:
 		get_node("/root/Scene").SelectionEffect(false)
@@ -54,7 +54,7 @@ func MoveEnd(_position):
 	set_process(false)
 	#node.modulate.a=1
 	node.global_position=_position
-	node.get_node("Gate").rect_rotation=old_rotation
+	node.get_node("Gate").rotation=old_rotation
 	if old_position==_position and create:
 		UIHandler.delete_node()
 	else:

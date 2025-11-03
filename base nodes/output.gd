@@ -8,14 +8,14 @@ var connection=0
 var coloring=false
 
 func _process(delta):
-	if mouse and $Blocks.rect_scale.x<1.5:
-		$Blocks.rect_scale+=Vector2(5*delta,5*delta)
-	elif mouse and $Blocks.rect_scale>=Vector2(1.5,1.5):
-		$Blocks.rect_scale=Vector2(1.5,1.5)
-	elif !mouse and $Blocks.rect_scale.x>1:
-		$Blocks.rect_scale-=Vector2(5*delta,5*delta)
+	if mouse and $Blocks.scale.x<1.5:
+		$Blocks.scale+=Vector2(5*delta,5*delta)
+	elif mouse and $Blocks.scale>=Vector2(1.5,1.5):
+		$Blocks.scale=Vector2(1.5,1.5)
+	elif !mouse and $Blocks.scale.x>1:
+		$Blocks.scale-=Vector2(5*delta,5*delta)
 	else:
-		$Blocks.rect_scale=Vector2(1,1)
+		$Blocks.scale=Vector2(1,1)
 		
 	if coloring:
 		if value==1 and $Blocks/off.modulate.a>0:	$Blocks/off.modulate.a-=5*delta

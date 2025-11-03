@@ -14,7 +14,7 @@ func _physics_process(_delta):
 func CreateLegsFromInstance(Info):
 	for i in Info.Inputs.keys():
 		legs+=1
-		var s = socket.instance()
+		var s = socket.instantiate()
 		s.name=i
 		$Sockets.add_child(s)
 		
@@ -22,7 +22,7 @@ func ResizeLegs(leg_count):
 	legs=leg_count
 	if legs>$Sockets.get_child_count():
 		for _i in range(legs-$Sockets.get_child_count()):
-			var s = socket.instance()
+			var s = socket.instantiate()
 			s.name="Input"+str(s.get_instance_id())
 			$Sockets.add_child(s)
 	elif legs<$Sockets.get_child_count():
@@ -33,11 +33,11 @@ func ResizeLegs(leg_count):
 				$Outputs/Output.emit_signal("value_changed",2)
 			$Sockets.get_child(i).queue_free()
 	if $Gate/Label.text!="NOT":
-		$Gate.rect_size.y=36*legs
-		$Gate.rect_position.y=-18*legs
-		$Gate.rect_pivot_offset.y=18*legs
-		$Gate/Label.rect_size.y=36*legs
-		$Gate/Label.rect_pivot_offset.y=18*legs
+		$Gate.size.y=36*legs
+		$Gate.position.y=-18*legs
+		$Gate.pivot_offset.y=18*legs
+		$Gate/Label.size.y=36*legs
+		$Gate/Label.pivot_offset.y=18*legs
 	UIHandler.CreateUI(self)
 	
 func CreateNode():

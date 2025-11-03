@@ -53,7 +53,7 @@ func _on_GridSeperator_value_changed(value):
 
 func _on_LineEdit_text_entered(new_text):
 	print("New Text")
-	if !new_text.is_valid_integer():
+	if !new_text.is_valid_int():
 		$VBoxContainer/HBoxContainer/LineEdit.text="1"
 	elif new_text.to_int()<=0:
 		$VBoxContainer/HBoxContainer/LineEdit.text="1"

@@ -1,11 +1,11 @@
 extends Panel
-onready var icons={
+@onready var icons={
 	#Node Icons
 	"Create":"res://Assets/Icons/Add.svg",
 	"Move":"res://Assets/Icons/ToolMove.svg",
 	"Delete":"res://Assets/Icons/Remove.svg",
 	"Rotate":"res://Assets/Icons/ToolRotate.svg",
-	"ResizeLegs":"res://Assets/Icons/TextureArray.svg",
+	"ResizeLegs":"res://Assets/Icons/Texture2DArray.svg",
 	#File Icons
 	"CreateScene":"res://Assets/Icons/CreateNewSceneFrom.svg",#New Scene
 	"CreatePrefab":"res://Assets/Icons/New.svg", #New Prefab

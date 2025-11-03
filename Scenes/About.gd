@@ -1,4 +1,4 @@
-extends WindowDialog
+extends Window
 
 func _on_TextureButton_pressed():
 	var _s1=OS.shell_open("https://github.com/umutsevdi1")

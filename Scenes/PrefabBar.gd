@@ -3,33 +3,33 @@ var folder=preload("res://UI/FolderButton.tscn")
 var file=preload("res://UI/FileButton.tscn")
 func _ready():
 	_on_RefreshButton_pressed()
-	$HBoxContainer/Button.pressed=true
+	$HBoxContainer/Button.button_pressed=true
 	
 func _on_Path_text_entered(new_text):
 	if new_text=="res://":
-		get_node("HBoxContainer/Path").text="user://"
+		get_node("HBoxContainer/Path3D").text="user://"
 	elif new_text=="C:":
-		get_node("HBoxContainer/Path").text="C:/"
+		get_node("HBoxContainer/Path3D").text="C:/"
 	_on_RefreshButton_pressed()
 func _on_RefreshButton_pressed():
-	var path=get_node("HBoxContainer/Path").text
+	var path=get_node("HBoxContainer/Path3D").text
 	dir_contents(path)
 
 func dir_contents(path):
 	for i in get_node("ScrollContainer/VBoxContainer").get_children():
 		i.queue_free()
-	var dir = Directory.new()
+	var dir = DirAccess.new()
 	if dir.open(path) == OK:
-		dir.list_dir_begin()
+		dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 		var file_name = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir() and file_name!="." and file_name!="..":
-				var unit=folder.instance()
+				var unit=folder.instantiate()
 				unit.name=file_name
 				unit.get_node("Label").text=file_name
 				get_node("ScrollContainer/VBoxContainer").add_child(unit)
 			elif file_name.get_extension()=="json":
-				var unit=file.instance()
+				var unit=file.instantiate()
 				unit.name=file_name
 				unit.get_node("Label").text=file_name
 				var item=Database.OpenDirectory(path+"/"+file_name)
@@ -50,12 +50,12 @@ func dir_contents(path):
 		print("An error occurred when trying to access the path.")
 
 func _on_UpButton_pressed():
-	get_node("HBoxContainer/Path").text=get_node("HBoxContainer/Path").text.replace("/"+get_node("HBoxContainer/Path").text.get_file(),"")
+	get_node("HBoxContainer/Path3D").text=get_node("HBoxContainer/Path3D").text.replace("/"+get_node("HBoxContainer/Path3D").text.get_file(),"")
 	_on_RefreshButton_pressed()
 
 func _on_Button_toggled(button_pressed):
 	if button_pressed:
-		$HBoxContainer/Path.text="user://"
+		$HBoxContainer/Path3D.text="user://"
 	else:
-		$HBoxContainer/Path.text="C:/"
+		$HBoxContainer/Path3D.text="C:/"
 	_on_RefreshButton_pressed()

@@ -9,10 +9,10 @@ script = ExtResource( 1 )
 anchor_left = 0.9
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 300.0
-margin_top = 42.0
-margin_right = 325.0
-margin_bottom = 900.0
+offset_left = 300.0
+offset_top = 42.0
+offset_right = 325.0
+offset_bottom = 900.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -21,10 +21,10 @@ __meta__ = {
 [node name="Inputs" type="VBoxContainer" parent="."]
 anchor_right = 0.1
 anchor_bottom = 1.0
-margin_left = 1270.0
-margin_top = 42.0
-margin_right = 1295.0
-margin_bottom = 900.0
+offset_left = 1270.0
+offset_top = 42.0
+offset_right = 1295.0
+offset_bottom = 900.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -34,8 +34,8 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="Gate"]
 visible = false
-margin_right = 114.0
-margin_bottom = 14.0
+offset_right = 114.0
+offset_bottom = 14.0
 text = "PrefabItems"
 __meta__ = {
 "_edit_use_anchors_": false

@@ -2,7 +2,7 @@ extends AcceptDialog
 var prefab_item=preload("res://Scenes/PrefabItems.tscn")
 var input=preload("res://base nodes/input.tscn")
 var output=preload("res://base nodes/output.tscn")
-onready var tab_container=get_parent().get_node("TabContainer")
+@onready var tab_container=get_parent().get_node("TabContainer")
 
 func EmptyBox(format):
 	if format=="Scene":
@@ -27,13 +27,13 @@ func _on_CreateScene_confirmed():
 	var new_scene=tab_container.CreateCustomTab($VBoxContainer/NameContainer/LineEdit.text,$VBoxContainer/SceneTypeContainer/OptionButton.text)
 	if new_scene!=null:
 		if new_scene.format=="Prefab":
-			new_scene.add_child(prefab_item.instance())
+			new_scene.add_child(prefab_item.instantiate())
 			for _i in range (get_node("VBoxContainer/OutputCountContainer/SpinBox").value):
-				var inp=input.instance()
+				var inp=input.instantiate()
 				inp.name="I"+str(inp.get_instance_id())
 				new_scene.get_node("PrefabItems/Inputs").add_child(inp)
 			for _i in range (get_node("VBoxContainer/InputCountContainer/SpinBox").value):
-				var out=output.instance()
+				var out=output.instantiate()
 				out.name="O"+str(out.get_instance_id())
 				new_scene.get_node("PrefabItems/Outputs").add_child(out)
 

@@ -18,13 +18,13 @@ anchor_left = 0.95
 anchor_top = 0.5
 anchor_right = 0.95
 anchor_bottom = 0.5
-margin_left = -1528.0
-margin_top = -458.0
-margin_right = -1512.0
-margin_bottom = -442.0
-rect_min_size = Vector2( 16, 16 )
-rect_pivot_offset = Vector2( 8, 8 )
-custom_styles/panel = SubResource( 1 )
+offset_left = -1528.0
+offset_top = -458.0
+offset_right = -1512.0
+offset_bottom = -442.0
+custom_minimum_size = Vector2( 16, 16 )
+pivot_offset = Vector2( 8, 8 )
+theme_override_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

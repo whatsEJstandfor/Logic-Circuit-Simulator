@@ -29,12 +29,12 @@ corner_radius_bottom_left = 16
 corner_detail = 20
 
 [node name="Output" type="Control"]
-margin_left = -12.5
-margin_top = -12.5
-margin_right = 12.5
-margin_bottom = 12.5
-rect_min_size = Vector2( 25, 25 )
-rect_pivot_offset = Vector2( 12.5, 12.5 )
+offset_left = -12.5
+offset_top = -12.5
+offset_right = 12.5
+offset_bottom = 12.5
+custom_minimum_size = Vector2( 25, 25 )
+pivot_offset = Vector2( 12.5, 12.5 )
 mouse_default_cursor_shape = 6
 script = ExtResource( 1 )
 __meta__ = {
@@ -42,10 +42,10 @@ __meta__ = {
 }
 
 [node name="Blocks" type="Control" parent="."]
-margin_left = 12.5
-margin_top = 12.5
-margin_right = 12.5
-margin_bottom = 12.5
+offset_left = 12.5
+offset_top = 12.5
+offset_right = 12.5
+offset_bottom = 12.5
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -53,15 +53,15 @@ __meta__ = {
 [node name="on" type="Panel" parent="Blocks"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -12.5
-margin_top = -12.5
-margin_right = 12.5
-margin_bottom = 12.5
+offset_left = -12.5
+offset_top = -12.5
+offset_right = 12.5
+offset_bottom = 12.5
 grow_horizontal = 2
 grow_vertical = 2
-rect_min_size = Vector2( 25, 25 )
-rect_pivot_offset = Vector2( 12.5, 12.5 )
-custom_styles/panel = SubResource( 1 )
+custom_minimum_size = Vector2( 25, 25 )
+pivot_offset = Vector2( 12.5, 12.5 )
+theme_override_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -70,30 +70,30 @@ __meta__ = {
 light_mask = -2147483647
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -12.5
-margin_top = -12.5
-margin_right = 12.5
-margin_bottom = 12.5
+offset_left = -12.5
+offset_top = -12.5
+offset_right = 12.5
+offset_bottom = 12.5
 grow_horizontal = 2
 grow_vertical = 2
-rect_min_size = Vector2( 25, 25 )
-rect_pivot_offset = Vector2( 12.5, 12.5 )
-custom_styles/panel = SubResource( 2 )
+custom_minimum_size = Vector2( 25, 25 )
+pivot_offset = Vector2( 12.5, 12.5 )
+theme_override_styles/panel = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Button" type="Button" parent="Blocks"]
-margin_left = -12.5
-margin_top = -12.5
-margin_right = 12.5
-margin_bottom = 12.5
-rect_pivot_offset = Vector2( 12.5, 12.5 )
+offset_left = -12.5
+offset_top = -12.5
+offset_right = 12.5
+offset_bottom = 12.5
+pivot_offset = Vector2( 12.5, 12.5 )
 focus_mode = 0
 shortcut_in_tooltip = false
 action_mode = 0
 button_mask = 3
-enabled_focus_mode = 0
+focus_mode = 0
 flat = true
 __meta__ = {
 "_edit_use_anchors_": false
